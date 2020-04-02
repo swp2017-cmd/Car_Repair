@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.dao.UserDao">
+ 	<select id="userLogin" parameterType="java.lang.String" resultType="com.domain.User">
+ 		select * from user where name =#{username} and password = #{userPwd}
+</select>
+  <select id="findUser" parameterType="java.lang.String" resultType="com.domain.User">
+    select  * from user where  id = #{id}
+  </select>
+  <select id="showUser" parameterType="java.lang.String" resultType="com.domain.User">
+
+    select  * from user
+  </select>
+
+
+
+<update id="updatePwd" parameterType="com.domain.User">
+	update user set password=#{password}
+ 		where id=#{id}
+
+
+</update>
+  <update id="changeUser" parameterType="com.domain.User" >
+
+update user set status=#{status}
+ 		where id=#{id}
+  </update>
+  <insert id="addUser" parameterType="com.domain.User">
+
+   insert into user
+ 		(name,password,type,status)
+ 		values
+ 		(#{name},#{password},#{type},#{status})
+
+
+  </insert>
+
+
+
+ </mapper>

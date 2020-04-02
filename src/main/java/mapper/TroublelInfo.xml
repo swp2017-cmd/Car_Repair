@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--namespace 指向工作空间-->
+ <mapper namespace="com.dao.TroubleInfoDao">
+  <!---->
+ 	<select id="queryAllTro" parameterType="java.lang.String" resultType="com.domain.TroubleInfo">
+    select * from trouble_info
+  </select>
+  <select id="findId" parameterType="java.lang.String" resultType="com.domain.TroubleInfo">
+
+
+    select  * from trouble_info where id = #{id}
+  </select>
+
+<update id="changeTro" parameterType="java.lang.String">
+  update trouble_info set status = #{status} where id = #{id}
+
+
+</update>
+  <insert id="addTrouble" parameterType="com.domain.TroubleInfo">
+
+
+    insert  into  trouble_info (trouble_code,trouble_name,trouble_remark) values (#{trouble_code},#{trouble_name},#{trouble_remark})
+  </insert>
+ </mapper>

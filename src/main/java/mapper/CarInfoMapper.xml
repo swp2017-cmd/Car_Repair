@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.dao.CarInfoDao">
+
+ 	<select id="selectCar" parameterType="java.lang.String" resultType="com.domain.CarInfo">
+ 		select * from car_info where user_id=#{user_id}
+ 	</select>
+  <delete id="deleteCar" parameterType="java.lang.String">
+    delete from  car_info where id = #{id}
+  </delete>
+  <select id="queryById" parameterType="java.lang.String" resultType="com.domain.CarInfo">
+    select  * from car_info where id = #{id}
+  </select>
+
+  <select id="showAllCar" parameterType="java.lang.String" resultType="com.domain.CarInfo">
+
+    select * from car_info
+  </select>
+  <select id="searchCarInfo"  parameterType="java.util.Map" resultType="com.domain.CarInfo">
+    select * from car_info
+    <where>
+    <if test="plate!= null">
+      plate like  #{plate}
+    </if>
+    <if test="brand!= null">
+      brand like #{brand}
+    </if>
+    <if test="user_name!=null">
+     user_name like #{user_name}
+
+     </if>
+
+    </where>
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+  <update id="updateCar" parameterType="com.domain.CarInfo">
+   update car_info set plate=#{plate},brand=#{brand},model=#{model}
+ 		,color=#{color},price=#{price},date=#{date},remark=#{remark}
+ 		where id=#{id}
+  </update>
+
+  <insert id="addCar" parameterType="com.domain.CarInfo">
+ 		insert into car_info
+ 		(user_id,user_name,plate,brand,model,color,price,date,remark)
+ 		values
+ 		(#{user_id},#{user_name},#{plate},#{brand},#{model},#{color},#{price},#{date},#{remark})
+ 	</insert>
+ </mapper>

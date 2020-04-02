@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+  <!--引入属性文件-->
+  <context:property-placeholder location="classpath:db_config.properties"></context:property-placeholder>
+
+  <!--配置数据源-->
+  <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+    <!--配置数据库连接驱动信息-->
+    <property name="driverClassName" value="${jdbc.driver}"></property>
+    <!--配置数据库连接地址-->
+    <property name="url" value="${jdbc.url}"></property>
+    <!--配置数据库连接用户名-->
+    <property name="username" value="${jdbc.username}"></property>
+    <!--配置数据库连接的密码-->
+    <property name="password" value="${jdbc.password}"></property>
+    <!--配置初始化连接数-->
+    <property name="initialSize" value="${jdbc.initialSize}"></property>
+    <!--配置连接最大的数量-->
+    <property name="maxActive" value="${jdbc.maxActive}"></property>
+    <!--配置连接最小的数-->
+    <property name="minIdle" value="${jdbc.minIdle}"></property>
+    <!--配置连接超时时间-->
+    <property name="maxWait" value="${jdbc.maxWait}"></property>
+  </bean>
+
+  <!--配置SqlSessionFactory-->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--配置数据源-->
+    <property name="dataSource" ref="dataSource"></property>
+    <!--配置映射文件路径-->
+    <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+  </bean>
+
+  <!--配置扫描Mapper(持久层接口)-->
+  <bean id="configurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.dao"></property>
+
+  </bean>
+
+  <!--声明事务管理者-->
+  <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+    <property name="dataSource" ref="dataSource"></property>
+  </bean>
+  <!--注解配置事务-->
+  <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+</beans>

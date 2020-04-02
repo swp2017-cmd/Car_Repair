@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+  <link rel="stylesheet" href="css/pintuer.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+
+<div class="bg"></div>
+<div class="container">
+  <div class="line bouncein">
+    <div class="xs6 xm4 xs3-move xm4-move">
+      <div style="height:150px;"></div>
+      <div class="media media-y margin-big-bottom">
+      </div>
+      <div class="panel loginbox">
+        <div class="text-center margin-big padding-big-top"><h1>车辆维修管理</h1></div>
+        <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
+          <div class="form-group">
+            <div class="field field-icon-right">
+              <input id="count"  type="text" class="input input-big" name="name" placeholder="登录账号" data-validate="required:请填写账号" />
+              <span class="icon icon-user margin-small"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="field field-icon-right">
+              <input id="password"  type="password" class="input input-big" name="password" placeholder="登录密码" data-validate="required:请填写密码" />
+              <span class="icon icon-key margin-small"></span>
+            </div>
+          </div>
+
+        </div>
+        <div style="padding:30px;"><input type="submit" class="button button-block bg-main text-big input-big" id="login" value="登录"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+<script src="js/cookie_util.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+<script type="text/javascript">
+
+  $(function(){
+    //登录按钮处理
+    $("#login").click(login);
+    //按回车实现登录
+    $("body").keydown(function(event){
+      var code=event.keyCode;
+      if(code==13){
+        login();//调用login函数
+      }
+    })
+
+
+    function login(){
+      //获取请求参数
+      var name=$("#count").val();
+      var password=$("#password").val().trim();
+      //检查参数格式
+      var check=true;//true通过检测，false未通过
+      //发送Ajax请求
+      if(check){
+        $.ajax({
+          url:"login.do",
+          type:"post",
+          data:{"name":name,"password":password},
+          dataType:"json",
+          success:function(rs){
+            var status=rs.status;
+            var msg=rs.msg;
+            //1为不可用状态
+            if(status=="1"){
+              layer.msg(msg)
+            }
+            if(status=="0"){
+              var type=rs.data.type;
+              // 获取返回的用户id和token，存入Cookie
+              var userId=rs.data.userId;
+              // 调用cookie_util.js函数写入Cookie
+              addCookie("userId", userId, 2);
+              if(type=="1"){
+
+                layer.msg("欢迎用户"+rs.data.userName+"登录", {icon: 1, time: 2000}, function () {
+                  location.href="index.html?userid="+rs.data.userId;
+                })
+
+              }else{
+                layer.msg("欢迎管理员登录")
+            location.href="back_index.html";
+              }
+            }
+
+          }
+
+        })
+      }
+    }
+  });
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+</html>

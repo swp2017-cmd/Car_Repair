@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.dao.OrderInfoDao">	
+
+<select id="selectAllOrder" parameterType="java.lang.String" resultType="com.domain.OrderInfo">
+  select  * from order_info where  user_id = #{user_id}
+
+
+</select>
+  <select id="queryAllOrder" parameterType="java.lang.String" resultType="com.domain.OrderInfo">
+
+    select  * from order_info ;
+
+  </select>
+  <select id="queryByStatus" parameterType="java.lang.Integer" resultType="com.domain.OrderInfo">
+    select  * from order_info where status = #{status}
+  </select>
+ 	<select id="findBySort" parameterType="java.lang.String" resultType="com.domain.OrderInfo">
+
+    select * from order_info ORDER BY long_time DESC
+  </select>
+
+
+  <select id="serachOrder" parameterType="java.util.Map" resultType="com.domain.OrderInfo">
+
+
+    select * from order_info
+    <where>
+      <if test="plate!=null ">
+        plate like #{plate}
+      </if>
+      <if test="trouble_name!=null ">
+        trouble_name like #{trouble_name}
+      </if>
+      <if test="contact!=null ">
+        contact like #{contact}
+      </if>
+      <if test="user_name!=null ">
+        user_name like #{user_name}
+      </if>
+    </where>
+  </select>
+
+  <delete id="delOrder" parameterType="java.lang.String" >
+
+    delete  from order_info where id = #{id}
+  </delete>
+
+  <update id="changeOrder" parameterType="com.domain.OrderInfo">
+
+    update order_info set status = #{status} where  id = #{id}
+  </update>
+  <insert id="addOrder" parameterType="com.domain.OrderInfo">
+    insert  into order_info
+     		(user_id,user_name,plate,trouble_code,trouble_name,contact,contact_way,remark,long_time,creart_time,status)
+ 		values
+ 		(#{user_id},#{user_name},#{plate},#{trouble_code},#{trouble_name},#{contact},#{contact_way},#{remark},#{long_time},#{creart_time},#{status})
+  </insert>
+ </mapper>
